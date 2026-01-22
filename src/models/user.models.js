@@ -13,13 +13,17 @@ const userSchema = new Schema(
       },
     password: { 
       type: String, 
-      required: [true, "Password is required"]
+      required: [true, "Password is required"],
+      minlength: 8,
+      maxLength: 30
      },
     refreshToken: {
        type: String
        },
     role: { type: String, enum: ["user", "admin"], default: "user" },
-    profilePicture: { type: String, default: ""},
+    profilePicture: {
+       type: String,
+        default: ""},
   },
   { timestamps: true }
 );

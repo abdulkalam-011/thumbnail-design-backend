@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import app from "./app.js";
 import connectDB from "./config/db.js";
+import connectCloudinary from "./config/cloudinary.js";
 
 dotenv.config({
   path: "./env",
@@ -20,5 +21,7 @@ connectDB()
 .catch((err) => {
   console.error("Failed to connect to the database:", err);
   process.exit(1);
-} );
+});
 
+
+connectCloudinary();
