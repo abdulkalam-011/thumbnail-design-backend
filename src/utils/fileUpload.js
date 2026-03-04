@@ -9,8 +9,7 @@ const uploadFileToCloudinary = async (filePath) => {
     const uploadResult = await cloudinary.uploader.upload(filePath, {
       resource_type: "auto",
     });
-
-    console.log("file uploaded successfully:", uploadResult.url);
+    fs.unlinkSync(filePath);
     return uploadResult;
   } catch (error) {
     console.log("file upload failed ", error);

@@ -3,11 +3,11 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import {storage} from "./middlewares/multer.middleware.js"
 
 // route imports
 import {authRoutes} from './routes/authRoutes.js';
 import {userRoutes} from './routes/userRoutes.js';
+import { workRoutes } from './routes/workRoutes.js';
 
 
 const app = express();
@@ -38,7 +38,7 @@ app.use(morgan('dev'));
 
 app.use('/api/v1/auth', authRoutes); 
 app.use('/api/v1/users', userRoutes); 
-app.use('/api/v1/works',workR); 
+app.use('/api/v1/works', workRoutes); 
 
 
 app.get('/', (req, res) => {

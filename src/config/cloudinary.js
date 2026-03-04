@@ -9,7 +9,6 @@ const connectCloudinary =async () => {
         api_secret: `${process.env.CLODINARY_API_SECRET}` 
     }); 
     const result = await cloudinary.api.ping();
-    console.log('Cloudinary connected:', result);
   } catch (error) {
     console.error('Cloudinary connection error:', error);
   }
