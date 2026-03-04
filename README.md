@@ -42,7 +42,12 @@ MONGODB_URI=<your_mongo_connection_string>
 CLOUDINARY_CLOUD_NAME=<cloud_name>
 CLOUDINARY_API_KEY=<api_key>
 CLOUDINARY_API_SECRET=<api_secret>
-JWT_SECRET=<your_jwt_secret>
+
+# JWT tokens
+ACCESS_TOKEN_SECRET=<secret for access tokens>
+ACCESS_TOKEN_EXPIRATION=15m           # e.g. 15m, 1h
+REFRESH_TOKEN_SECRET=<secret for refresh tokens>
+REFRESH_TOKEN_EXPIRATION=7d          # typically longer than access
 ```
 
 ### Running the Server
@@ -74,6 +79,13 @@ src/
 ### Auth
 - `POST /api/auth/register` – create user
 - `POST /api/auth/login` – authenticate user
+- `POST /api/auth/refresh` – exchange a valid refresh token for a new access token (middleware `verifyRefreshToken`)
+
+Routes use the `authenticateUser` middleware which reads an access token from a cookie or
+an `Authorization: Bearer <token>` header; a 401 is returned if no token or it is invalid/expired.
+
+Protected endpoints can further restrict by role using the `authorizeRoles(...)` helper
+(such as `authorizeRoles('admin')`).
 
 ### Users
 - CRUD under `/api/users`
@@ -82,6 +94,8 @@ src/
 - Standard RESTful routes (`GET`, `POST`, `PUT`, `DELETE`) under `/api/works`, `/api/projects`, etc.
 
 > See route files in `src/routes` for details.
+>
+> The auth middleware now supports header tokens and role-based checks; see `src/middlewares/auth.middleware.js`.
 
 ## ✅ Example Request
 
