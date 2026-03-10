@@ -19,13 +19,18 @@ const authenticateUser = asyncHandler(async (req, res, next) => {
   const token = getTokenFromRequest(req);
 
   if (!token) {
-    return next(new ApiError(401, "Access token missing"));
+    return res.status(401).json({
+      statusCode:401,
+      message:"User is not logged in",
+      data:null,
+      success:false
+    })
   }
 
   try {
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    const user = await User.findById(decodedToken._id).select(
+    const user = await User.findById(decodedToken?._id).select(
       "-password -refreshToken"
     );
     if (!user) {
