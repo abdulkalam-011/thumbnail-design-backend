@@ -41,9 +41,11 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/works', workRoutes); 
 
 
-app.get('/', (req, res) => {
+app.get('/api/v1/health', (req, res) => {
   res.send('Hello, World!');
 });
+
+
 
 
 export default app;
