@@ -1,13 +1,13 @@
-import dotenv from "dotenv";
+import dotenv from "dotenv/config";
 import app from "./app.js";
 import connectDB from "./config/db.js";
 import connectCloudinary from "./config/cloudinary.js";
 
-dotenv.config({
-  path: "./env",
-});
+// dotenv.config({
+//   path: "./env",
+// });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 connectDB()
 .then(() => {
