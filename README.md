@@ -77,15 +77,33 @@ src/
 ## 📦 API Endpoints
 
 ### Auth
-- `POST /api/auth/register` – create user
-- `POST /api/auth/login` – authenticate user
-- `POST /api/auth/refresh` – exchange a valid refresh token for a new access token (middleware `verifyRefreshToken`)
+The authentication system supports browser‑friendly cookies as well as bearer tokens.  Access and
+refresh tokens are stored in `httpOnly` cookies by default, but you can also send them via an
+`Authorization: Bearer <token>` header (access) or in the request body (refresh).  The `authenticateUser`
+middleware extracts the access token from whichever source is available and rejects the request
+with `401` if it is missing, invalid or expired.
 
-Routes use the `authenticateUser` middleware which reads an access token from a cookie or
-an `Authorization: Bearer <token>` header; a 401 is returned if no token or it is invalid/expired.
+Protected routes can additionally restrict by role using the `authorizeRoles(...)` helper
+(e.g. `authorizeRoles('admin')`).
 
-Protected endpoints can further restrict by role using the `authorizeRoles(...)` helper
-(such as `authorizeRoles('admin')`).
+Available endpoints:
+
+- `POST /api/v1/auth/register` – register a new user.  You may upload a `profilePicture` file
+  (handled by Multer) which is stored in Cloudinary.
+- `POST /api/v1/auth/login` – authenticate with `{ email, password }`.  Returns user data as
+  well as access/refresh tokens and sets the same tokens as cookies.
+- `POST /api/v1/auth/logout` – logs the current user out, clears auth cookies.  Requires
+  authentication.
+- `POST /api/v1/auth/refresh-token` – exchange a valid refresh token (cookie or body) for a
+  new access/refresh pair.  No authentication required; the token itself is validated.
+- `POST /api/v1/auth/reset-password` – update your password.  Requires authentication and
+  accepts `{ oldPassword, newPassword, confirmPassword }`.
+- `DELETE /api/v1/auth/delete-me` – delete the authenticated user and clear auth cookies.
+- `GET /api/v1/auth/get-me` – fetch the currently logged‑in user’s profile.
+
+> Note: some earlier versions documented `/api/auth/refresh`; the current path is
+> `/api/v1/auth/refresh-token`.
+
 
 ### Users
 - CRUD under `/api/users`

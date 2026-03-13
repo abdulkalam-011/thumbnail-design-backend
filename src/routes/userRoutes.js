@@ -36,6 +36,7 @@ router.put("/:id", async (req, res) => {
     const user = await User.findByIdAndUpdate(userId, updateData, {
       new: true,
     }).select("-password -refreshToken");
+    
     if (!user) {
       return res.status(404).json(new ApiError(404, "User not found"));
     }

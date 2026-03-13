@@ -27,7 +27,7 @@ router.post("/refresh-token", refreshAccessToken );
 
 // route : /api/v1/auth/reset-password
 // purpose : updating user password to a new password 
-router.post("/reset-password",authenticateUser,resetPassword)
+ router.route("/reset-password").put(authenticateUser,resetPassword)
 
 
 // route : /api/v1/auth/delete-me

@@ -4,7 +4,7 @@ import connectDB from "./config/db.js";
 import connectCloudinary from "./config/cloudinary.js";
 
 // dotenv.config({
-//   path: "./env",
+//   path: "./.env",
 // });
 
 const PORT = process.env.PORT || 4000;
@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 4000;
 connectDB()
 .then(() => {
   app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}`);
+    console.log(`Server is running on  http://localhost:${PORT}`);
   });
   app.on("error", (err) => {
     console.error(" internal Server error:", err);
