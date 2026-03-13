@@ -63,7 +63,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
     return res
       .status(201)
-      .json(new ApiResponse(201, "User created successfully", createdUser));
+      .json(new ApiResponse(201, createdUser, "User Created successfully"));
   } catch (error) {
     console.log("user registration error ", error);
     return res.status(500).json(new ApiError(500, "Server error"));
