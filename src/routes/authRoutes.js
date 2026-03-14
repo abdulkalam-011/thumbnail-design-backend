@@ -45,6 +45,6 @@ router.route("/:id").delete(authenticateUser, deleteCurrentUser);
 // route : /api/v1/auth/get-me
 // purpose : get the current logged in user
 // router.get("/get-me", authenticateUser, getLOggedInUser);
-router.route("/get-me").get(authenticateUser, getLOggedInUser);
+router.route("/:id").get(authenticateUser, getLOggedInUser);
 
 export { router as authRoutes };

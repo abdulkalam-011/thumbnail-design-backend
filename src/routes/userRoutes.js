@@ -4,11 +4,12 @@ const router = express.Router();
 import { User } from "../models/user.models.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { getAllUsers, getUserById } from "../controllers/user.controllers.js";
+import { getAllUsers, getUserById, updateUserDetails, updateUserProfilePicture } from "../controllers/user.controllers.js";
 import {
   authenticateUser,
   authorizeRoles,
 } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 //  route : /api/v1/user/
 //  Purpose : Create a new user
@@ -60,5 +61,8 @@ router.post("/:id/avatar", async (req, res) => {
     return res.status(500).json(new ApiError(500, "Server error"));
   }
 });
+
+router.route("/update-profile-picture").patch(authenticateUser,upload.single("profilePicture"),updateUserProfilePicture)
+router.route("/update-user").patch(authenticateUser,updateUserDetails)
 
 export { router as userRoutes };
