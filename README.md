@@ -106,14 +106,20 @@ Available endpoints:
 
 
 ### Users
-- CRUD under `/api/users`
+- `GET /api/v1/users/` (requires authenticated user with `user` role)
+- `GET /api/v1/users/:id`
+- `PUT /api/v1/users/:id`
+- `POST /api/v1/users/:id/avatar`
+- `PATCH /api/v1/users/update-profile-picture` (authenticated)
+- `PATCH /api/v1/users/update-user` (authenticated)
 
-### Works / Projects / Testimonials / Categories
-- Standard RESTful routes (`GET`, `POST`, `PUT`, `DELETE`) under `/api/works`, `/api/projects`, etc.
+### Works
+- `GET /api/v1/works/`
+- `POST /api/v1/works/`
 
 > See route files in `src/routes` for details.
 >
-> The auth middleware now supports header tokens and role-based checks; see `src/middlewares/auth.middleware.js`.
+> The auth middleware supports header tokens and role-based checks; see `src/middlewares/auth.middleware.js`.
 
 ## ✅ Example Request
 
