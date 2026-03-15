@@ -11,20 +11,27 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
-      lowercase:true,
+      lowercase: true,
       unique: true,
       trim: true,
-      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please provide a valid email"],
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please provide a valid email",
+      ],
     },
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlength: [8,"password must be atleast 8 characters"]
+      minlength: [8, "password must be atleast 8 characters"],
     },
     refreshToken: {
       type: String,
     },
-    role: { type: String, enum: ["user", "admin"], default: "user" },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
     profilePicture: {
       type: String,
       default: "",
@@ -36,6 +43,8 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
+
+userSchema.index({ role: 1 });
 
 userSchema.pre("save", async function () {
   // If password hasn't changed, skip hashing
