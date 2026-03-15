@@ -11,12 +11,15 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
+      lowercase:true,
       unique: true,
+      trim: true,
+      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please provide a valid email"],
     },
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlength: 8,
+      minlength: [8,"password must be atleast 8 characters"]
     },
     refreshToken: {
       type: String,
@@ -26,11 +29,15 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );
 
-userSchema.pre("save", async function() {
+userSchema.pre("save", async function () {
   // If password hasn't changed, skip hashing
   if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 10);
@@ -51,13 +58,17 @@ userSchema.methods.generateRefreshToken = function () {
   return refreshToken;
 };
 userSchema.methods.generateAccessToken = function () {
-  return jwt.sign({ 
-    _id: this._id,
-    name: this.name,
-    email: this.email,
-    role: this.role,
-   }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
-  });
+  return jwt.sign(
+    {
+      _id: this._id,
+      name: this.name,
+      email: this.email,
+      role: this.role,
+    },
+    process.env.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+    }
+  );
 };
 export const User = mongoose.model("User", userSchema);
