@@ -78,7 +78,7 @@ const updateUserDetails = asyncHandler(async (req, res) => {
   .json(new ApiResponse(200,user, "user details updated successfully"))
 });
 
-// For Admin Use
+// For Admin Use Only 
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const users = await User.find().select("-password -refreshToken");
