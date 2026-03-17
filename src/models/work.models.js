@@ -6,31 +6,28 @@ const workSchema = new Schema(
       type: String,
       required: [true, "title is required"],
     },
-    description: {
+    description:{
+      type:String
+    },
+    videoId: {
       type: String,
       default: "",
     },
-    beforeImgUrl: {
-      type: String,
-      default: "",
+    channel:{
+      type:Array,
     },
-    afterImgUrl: {
-      type: String,
-      default: "",
-    },
-    thumbnailImgUrl: {
-      type: String,
-      required: [true, "thumbnail image is required"],
-    },
+    thumbnails:Object,
+    statistics:Object,
     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: [true, "category is required"],
+     type:String
     },
-    livelink: {
+    link: {
       type: String,
       default: "",
     },
+    lastUpdated:{
+      type:Date,
+    }
   },
   { timestamps: true }
 );
