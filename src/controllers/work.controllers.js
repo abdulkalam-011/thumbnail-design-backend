@@ -5,7 +5,7 @@ import {
   getChannelInfo,
   getVideoInfo,
 } from "../utils/getYoutubeVideo.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiResponse } from "../utils/Response.js";
 import { Work } from "../models/work.models.js";
 
 const uploadWork = asyncHandler(async (req, res) => {

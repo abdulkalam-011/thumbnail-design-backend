@@ -2,7 +2,7 @@ import { User } from "../models/user.models.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadFileToCloudinary } from "../utils/fileUpload.js";
 import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiResponse } from "../utils/Response.js";
 import jwt from "jsonwebtoken";
 
 const options = {
