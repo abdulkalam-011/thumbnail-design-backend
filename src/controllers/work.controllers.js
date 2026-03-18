@@ -49,17 +49,17 @@ const uploadWork = asyncHandler(async (req, res) => {
         });
       }
        
-      const data = {
-        title: video.snippet.title,
-        description: video.snippet.description,
-        videoId: video.id,
-        channel: channel,
-        thumbnails: video.snippet.thumbnails,
-        statistics: video.statistics,
-        category,
-        link: url,
-        lastUpdated: Date.now(),
-      }
+      // const data = {
+      //   title: video.snippet.title,
+      //   description: video.snippet.description,
+      //   videoId: video.id,
+      //   channel: channel,
+      //   thumbnails: video.snippet.thumbnails,
+      //   statistics: video.statistics,
+      //   category,
+      //   link: url,
+      //   lastUpdated: Date.now(),
+      // }
 
       const work = await Work.create({
         title: video.snippet.title,
