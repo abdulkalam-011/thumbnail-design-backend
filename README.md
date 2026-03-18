@@ -37,7 +37,7 @@ npm install
 Create a `.env` file in the root or set these variables in your environment:
 
 ```env
-PORT=5000
+PORT=4000
 MONGODB_URI=<your_mongo_connection_string>
 CLOUDINARY_CLOUD_NAME=<cloud_name>
 CLOUDINARY_API_KEY=<api_key>
@@ -58,7 +58,7 @@ npm start
 npm run dev
 ```
 
-The server will start on `http://localhost:5000` by default.
+The server will start on `http://localhost:4000` by default.
 
 ## 📁 Project Structure
 
