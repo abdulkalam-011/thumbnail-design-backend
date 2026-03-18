@@ -11,8 +11,6 @@ import { Work } from "../models/work.models.js";
 const uploadWork = asyncHandler(async (req, res) => {
   const { url } = req.body;
 
- 
-
   if (!url) {
     return res.status(400).json({
       message: "url is required",
@@ -27,10 +25,13 @@ const uploadWork = asyncHandler(async (req, res) => {
       if (!video) {
         return res
           .status(400)
-          .json({ message: "Video Not found for this URL" ,data:null, success:0});
+          .json({
+            message: "Video Not found for this URL",
+            data: null,
+            success: 0,
+          });
       }
 
-      console.log("CHANNL ID : ", video.snippet.channelId);
       const category = getCategoryName(video.snippet.categoryId);
       const channel = await getChannelInfo(video.snippet.channelId);
 
@@ -48,7 +49,7 @@ const uploadWork = asyncHandler(async (req, res) => {
           success: false,
         });
       }
-       
+
       // const data = {
       //   title: video.snippet.title,
       //   description: video.snippet.description,
@@ -60,7 +61,19 @@ const uploadWork = asyncHandler(async (req, res) => {
       //   link: url,
       //   lastUpdated: Date.now(),
       // }
+      const existingWork = await Work.find({
+        $or: [{ videoId: video.id }, { link: url }],
+      });
 
+      if (existingWork) {
+        return res.status(400).json({
+          message: "This video Already exists",
+          data: null,
+          success: false,
+        });
+      }
+
+      
       const work = await Work.create({
         title: video.snippet.title,
         description: video.snippet.description,
@@ -86,8 +99,8 @@ const uploadWork = asyncHandler(async (req, res) => {
     } else {
     }
   } catch (error) {
-    console.log("Work Upload Error : ", error)
-    res.send(error)
+    console.log("Work Upload Error : ", error);
+    res.send(error);
   }
 });
 
