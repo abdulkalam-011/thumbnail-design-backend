@@ -23,13 +23,11 @@ const uploadWork = asyncHandler(async (req, res) => {
     if (url) {
       const video = await getVideoInfo(url);
       if (!video) {
-        return res
-          .status(400)
-          .json({
-            message: "Video Not found for this URL",
-            data: null,
-            success: 0,
-          });
+        return res.status(400).json({
+          message: "Video Not found for this URL",
+          data: null,
+          success: 0,
+        });
       }
 
       const category = getCategoryName(video.snippet.categoryId);
@@ -50,30 +48,20 @@ const uploadWork = asyncHandler(async (req, res) => {
         });
       }
 
-      // const data = {
-      //   title: video.snippet.title,
-      //   description: video.snippet.description,
-      //   videoId: video.id,
-      //   channel: channel,
-      //   thumbnails: video.snippet.thumbnails,
-      //   statistics: video.statistics,
-      //   category,
-      //   link: url,
-      //   lastUpdated: Date.now(),
-      // }
       const existingWork = await Work.find({
         $or: [{ videoId: video.id }, { link: url }],
       });
 
-      if (existingWork) {
-        return res.status(400).json({
-          message: "This video Already exists",
-          data: null,
-          success: false,
-        });
+      if (existingWork.length > 0) {
+        if (existingWork[0].videoId === video.id) {
+          return res.status(400).json({
+            statusCode: 400,
+            message: "This video Already exists",
+            data: existingWork[0].link,
+            success: false,
+          });
+        }
       }
-
-      
       const work = await Work.create({
         title: video.snippet.title,
         description: video.snippet.description,
@@ -94,8 +82,8 @@ const uploadWork = asyncHandler(async (req, res) => {
         });
       }
       return res
-        .status(200)
-        .json(new ApiResponse(200, work, "video uploaded successfully"));
+        .status(201)
+        .json(new ApiResponse(201, work, "video uploaded successfully"));
     } else {
     }
   } catch (error) {
@@ -104,4 +92,41 @@ const uploadWork = asyncHandler(async (req, res) => {
   }
 });
 
-export { uploadWork };
+const getAllWorks = asyncHandler(async (req, res) => {
+  const { limit } = req.params;
+  console.log(limit);
+  const videos = await Work.find();
+
+  if (!videos && !videos.length > 0) {
+    res.status(400).json({
+      statusCode: 400,
+      message: "Videos Not found ",
+      data: null,
+      success: false,
+    });
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, videos, "All video fetched succesfull"));
+});
+
+const getWorkById = asyncHandler(async (req, res) => {
+  const { workId } = req.params;
+
+  const work = await Work.findById(workId);
+  if(!work){
+    return res.status(400).json({
+      statusCode:400,
+      message:"work not found",
+      data:null,
+      success:false
+    })
+  }
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200,work,"work fetched successfully"))
+});
+
+export { uploadWork, getAllWorks, getWorkById };
