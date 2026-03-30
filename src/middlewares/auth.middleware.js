@@ -57,7 +57,13 @@ const authorizeRoles = (...allowedRoles) => {
       return next(new ApiError(401, "Not authenticated"));
     }
     if (!allowedRoles.includes(req.user.role)) {
-      return next(new ApiError(403, "Forbidden: insufficient privileges"));
+      return res.status(403).json({
+        statusCode:403,
+        message:"Fobidden: Insufficient Privillages ",
+        data:null,
+        success:false,
+      })
+      next()
     }
     next();
   };
