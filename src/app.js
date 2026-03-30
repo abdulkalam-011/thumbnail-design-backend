@@ -3,19 +3,18 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import fs from "fs";
-import path from "path";
+
 import { fileURLToPath } from "url";
 
 // route imports
 import { authRoutes } from "./routes/authRoutes.js";
 import { userRoutes } from "./routes/userRoutes.js";
 import { workRoutes } from "./routes/workRoutes.js";
+import { ApiError } from "./utils/ApiError.js";
+import { ApiResponse } from "./utils/Response.js";
 
 const app = express();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // cors middleware
 app.use(
@@ -126,5 +125,14 @@ app.get("/", (req, res) => {
 app.get("/api/v1/health", (req, res) => {
   res.send("Hello, World!");
 });
+
+app.post("/api/v1/test", async(req,res)=>{
+    const {name} = req.body;
+    if(!name){
+        throw new ApiError(400,"name is required")
+    }
+
+    res.json(new ApiResponse(200,`test is done by ${name}`,"test succesfull"))
+})
 
 export default app;
