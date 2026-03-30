@@ -2,7 +2,6 @@ import dotenv from "dotenv/config";
 import app from "./app.js";
 import connectDB from "./config/db.js";
 import connectCloudinary from "./config/cloudinary.js";
-import { getCategoryName, getVideoInfo } from "./utils/getYoutubeVideo.js";
 import { YoutubeCron } from "./cron/youtube.cron.js";
 
 // dotenv.config({
